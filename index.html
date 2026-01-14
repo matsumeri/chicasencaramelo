@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chicas en caramelo — Bienvenida</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/banner.mp4" type="video/mp4">
+      Tu navegador no soporta video.
+    </video>
+    <div class="container">
+      <h1 class="brand">Chicas en caramelo</h1>
+      <p class="tag">Bienestar femenino con cariño y claridad</p>
+      <a href="#calculator" class="cta">Calculadora de embarazo</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="calculator" class="card">
+      <h2>Calculadora de embarazo</h2>
+      <p>Ingresa la fecha de tu última regla (FUR) para calcular semanas, días y fecha probable de parto.</p>
+      <form id="lmpForm">
+        <label for="lmp">Fecha de última regla</label>
+        <input type="date" id="lmp" name="lmp" required>
+        <button type="submit" class="btn">Calcular</button>
+      </form>
+      <div id="result" class="result" aria-live="polite"></div>
+    </section>
+
+    <section id="testimonials" class="card">
+      <h2>Testimonios</h2>
+      <p>Conversaciones de WhatsApp y tickets de envío de nuestras clientas satisfechas.</p>
+      <div class="testimonials-grid">
+        <img src="assets/testimonio1.svg" alt="Testimonio 1" class="modal-img" data-full="assets/testimonio1.svg">
+        <img src="assets/testimonio2.svg" alt="Testimonio 2" class="modal-img" data-full="assets/testimonio2.svg">
+        <img src="assets/testimonio3.svg" alt="Testimonio 3" class="modal-img" data-full="assets/testimonio3.svg">
+      </div>
+    </section>
+
+    <section id="infographics" class="card">
+      <h2>Infografías</h2>
+      <p>Guías visuales sobre embarazo, nutrición y cuidado.</p>
+      <div class="infographics-grid">
+        <img src="assets/infografia1.svg" alt="Infografía 1" class="modal-img" data-full="assets/infografia1.svg">
+        <img src="assets/infografia2.svg" alt="Infografía 2" class="modal-img" data-full="assets/infografia2.svg">
+        <img src="assets/infografia3.svg" alt="Infografía 3" class="modal-img" data-full="assets/infografia3.svg">
+      </div>
+    </section>
+  </main>
+
+  <a class="whatsapp-float" href="https://wa.me/56998427335?text=Me%20interesa%20el%20tratamiento%20e%20informaci%C3%B3n%20del%20mismo" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" title="Contactar por WhatsApp">
+    <img src="assets/whatsapp.svg" alt="WhatsApp">
+  </a>
+
+  <footer class="site-footer">
+    <div class="container">© Chicas en caramelo • Recursos diseñados con amor</div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

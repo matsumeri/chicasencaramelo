@@ -1,0 +1,11 @@
+<svg width="300" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="150" y="30" text-anchor="middle" font-family="Arial" font-size="16" fill="#000" font-weight="bold">Ticket de Envío</text>
+  <text x="20" y="60" font-family="Arial" font-size="12" fill="#000">Destinatario: Carla López</text>
+  <text x="20" y="80" font-family="Arial" font-size="12" fill="#000">Producto: Kit de Bienestar Femenino</text>
+  <text x="20" y="100" font-family="Arial" font-size="12" fill="#000">Fecha de Envío: 15/01/2026</text>
+  <text x="20" y="120" font-family="Arial" font-size="12" fill="#000">Estado: Entregado</text>
+  <text x="20" y="140" font-family="Arial" font-size="12" fill="#000">Comentario: ¡Excelente servicio!</text>
+  <rect x="50" y="160" width="200" height="100" fill="#f0f0f0" stroke="#000"/>
+  <text x="150" y="210" text-anchor="middle" font-family="Arial" font-size="14" fill="#000">Firma Digital</text>
+</svg>

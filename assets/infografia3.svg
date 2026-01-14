@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" rx="20" fill="#FFFEEC"/>
+  <g opacity="0.08" fill="#A88AED">
+    <rect x="60" y="80" width="680" height="120" rx="12"/>
+    <rect x="60" y="220" width="260" height="260" rx="12"/>
+    <rect x="360" y="220" width="380" height="260" rx="12"/>
+  </g>
+  <text x="60" y="520" font-family="Arial" font-size="24" fill="#6b6b6b">Infografía 3 - Placeholder</text>
+</svg>

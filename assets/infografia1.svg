@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" rx="20" fill="#FFFEEC"/>
+  <rect x="40" y="40" width="720" height="120" rx="12" fill="#A88AED" opacity="0.12"/>
+  <circle cx="120" cy="260" r="60" fill="#CBD83B" opacity="0.15"/>
+  <rect x="220" y="220" width="480" height="260" rx="12" fill="#A88AED" opacity="0.06"/>
+  <text x="60" y="520" font-family="Arial" font-size="24" fill="#6b6b6b">Infografía 1 - Placeholder</text>
+</svg>
