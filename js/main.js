@@ -29,13 +29,54 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const modal = document.getElementById('modal')
   const modalImg = document.getElementById('modal-img')
   const closeBtn = document.getElementsByClassName('close')[0]
+  const testimonialsViewport = document.querySelector('.testimonials-viewport')
+  const testimonialsTrack = document.querySelector('.testimonials-track')
+  const carouselButtons = document.querySelectorAll('.carousel-btn')
+
+  const updateCarouselButtons = () => {
+    if (!testimonialsViewport || !testimonialsTrack || carouselButtons.length === 0) return
+
+    const maxScroll = testimonialsTrack.scrollWidth - testimonialsViewport.clientWidth
+    const currentScroll = testimonialsViewport.scrollLeft
+
+    carouselButtons.forEach(button => {
+      if (button.dataset.direction === 'prev') {
+        button.disabled = currentScroll <= 4
+      } else {
+        button.disabled = currentScroll >= maxScroll - 4
+      }
+    })
+  }
+
+  const scrollTestimonials = direction => {
+    if (!testimonialsViewport || !testimonialsTrack) return
+
+    const firstItem = testimonialsTrack.querySelector('.modal-img')
+    const gap = 12
+    const step = firstItem ? firstItem.clientWidth + gap : testimonialsViewport.clientWidth * 0.8
+    const offset = direction === 'next' ? step * 2 : -step * 2
+
+    testimonialsViewport.scrollBy({ left: offset, behavior: 'smooth' })
+  }
 
   document.querySelectorAll('.modal-img').forEach(img => {
     img.addEventListener('click', () => {
       modal.style.display = 'block'
-      modalImg.src = img.dataset.full
+      modalImg.src = img.dataset.full || img.src
     })
   })
+
+  carouselButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      scrollTestimonials(button.dataset.direction)
+    })
+  })
+
+  if (testimonialsViewport) {
+    testimonialsViewport.addEventListener('scroll', updateCarouselButtons)
+    window.addEventListener('resize', updateCarouselButtons)
+    updateCarouselButtons()
+  }
 
   closeBtn.addEventListener('click', () => {
     modal.style.display = 'none'

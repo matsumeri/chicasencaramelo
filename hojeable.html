@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructivo hojeable</title>
+    <style>
+        :root {
+            --lima: #CBD83B;
+            --morado: #A88AED;
+            --cream: #FFFEEC;
+            --texto: #222;
+            --sombra: 0 18px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: linear-gradient(180deg, #fffef4 0%, var(--cream) 100%);
+            color: var(--texto);
+        }
+
+        .viewer-shell {
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .btn {
+            appearance: none;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+        }
+
+        .btn:hover,
+        .btn:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-primary {
+            background: var(--morado);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--texto);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-arrow {
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 28px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .book-stage {
+            width: min(1100px, 100%);
+            background: rgba(255, 255, 255, 0.86);
+            border-radius: 28px;
+            padding: 22px;
+            margin-top: 4px;
+            box-shadow: var(--sombra);
+            backdrop-filter: blur(6px);
+        }
+
+        .book-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .book-status {
+            font-weight: 700;
+            color: var(--morado);
+        }
+
+        .flipbook-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 0;
+            position: relative;
+            padding: 24px 90px;
+        }
+
+        #flipbook {
+            margin: 0 auto;
+            width: min(100%, 920px);
+            visibility: hidden;
+        }
+
+        .stf__parent {
+            margin: 0 auto;
+        }
+
+        .stf__parent img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .side-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 58px;
+            height: 58px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            color: #1f1f1f;
+            font-size: 82px;
+            line-height: 1;
+            font-weight: 400;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .15s ease, opacity .15s ease;
+            z-index: 30;
+            padding: 0;
+        }
+
+        .side-arrow:hover,
+        .side-arrow:focus {
+            transform: translateY(-50%) scale(1.06);
+            opacity: 0.9;
+            outline: none;
+        }
+
+        #prev-page {
+            left: 8px;
+        }
+
+        #next-page {
+            right: 8px;
+        }
+
+        .loading {
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .viewer-shell {
+                padding: 16px;
+                gap: 10px;
+            }
+
+            .book-stage {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .flipbook-wrap {
+                min-height: auto;
+                padding: 16px 56px;
+            }
+
+            .side-arrow {
+                font-size: 62px;
+                width: 46px;
+                height: 46px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-shell">
+        <section class="book-stage">
+            <div class="book-toolbar">
+                <a href="index.html" class="btn btn-secondary">Volver al inicio</a>
+                <div id="page-indicator" class="book-status">Cargando páginas…</div>
+            </div>
+
+            <div id="loading" class="loading">Preparando el flipbook…</div>
+            <div class="flipbook-wrap">
+                <button id="prev-page" class="side-arrow" type="button" aria-label="Página anterior">‹</button>
+                <div id="flipbook"></div>
+                <button id="next-page" class="side-arrow" type="button" aria-label="Página siguiente">›</button>
+            </div>
+        </section>
+    </div>
+
+    <audio id="pageTurnSound" src="assets/sounds/page-turn.mp3" preload="auto"></audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+    <script>
+        const pdfPath = 'assets/doc/instructivo miso.pdf';
+        const loadingEl = document.getElementById('loading');
+        const flipbookEl = document.getElementById('flipbook');
+        const pageIndicator = document.getElementById('page-indicator');
+        const prevButton = document.getElementById('prev-page');
+        const nextButton = document.getElementById('next-page');
+        const pageTurnSound = document.getElementById('pageTurnSound');
+        let pageFlipInstance = null;
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        function showError(message) {
+            loadingEl.style.display = 'flex';
+            loadingEl.textContent = message;
+            flipbookEl.style.visibility = 'hidden';
+            pageIndicator.textContent = 'No se pudo abrir el instructivo';
+        }
+
+        function playTurnSound() {
+            if (!pageTurnSound) {
+                return;
+            }
+
+            pageTurnSound.currentTime = 0;
+            pageTurnSound.play().catch(() => {
+            });
+        }
+
+        async function renderPdfToPages(pdf) {
+            const pageImages = [];
+            const maxWidth = window.innerWidth <= 768 ? Math.min(window.innerWidth - 64, 340) : 460;
+
+            for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+                const page = await pdf.getPage(pageNumber);
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = maxWidth / viewport.width;
+                const scaledViewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+
+                canvas.width = scaledViewport.width;
+                canvas.height = scaledViewport.height;
+
+                await page.render({
+                    canvasContext: context,
+                    viewport: scaledViewport
+                }).promise;
+
+                pageImages.push(canvas.toDataURL('image/jpeg', 0.92));
+            }
+
+            return pageImages;
+        }
+
+        async function initFlipbook() {
+            try {
+                const pdf = await pdfjsLib.getDocument(pdfPath).promise;
+                const pageImages = await renderPdfToPages(pdf);
+                const samplePage = await pdf.getPage(1);
+                const sampleViewport = samplePage.getViewport({ scale: 1 });
+                const maxWidth = window.innerWidth <= 768 ? Math.min(window.innerWidth - 64, 340) : 460;
+                const scale = maxWidth / sampleViewport.width;
+                const pageWidth = Math.round(sampleViewport.width * scale);
+                const pageHeight = Math.round(sampleViewport.height * scale);
+
+                pageIndicator.textContent = `Página 1 de ${pdf.numPages}`;
+
+                pageFlipInstance = new St.PageFlip(flipbookEl, {
+                    width: pageWidth,
+                    height: pageHeight,
+                    size: 'stretch',
+                    minWidth: 280,
+                    maxWidth: pageWidth,
+                    minHeight: 360,
+                    maxHeight: pageHeight,
+                    showCover: true,
+                    mobileScrollSupport: true,
+                    usePortrait: true,
+                    flippingTime: 700,
+                    maxShadowOpacity: 0.25,
+                    drawShadow: true,
+                    autoSize: true
+                });
+
+                pageFlipInstance.loadFromImages(pageImages);
+                loadingEl.style.display = 'none';
+                flipbookEl.style.visibility = 'visible';
+
+                pageFlipInstance.on('init', () => {
+                    flipbookEl.style.visibility = 'visible';
+                });
+
+                pageFlipInstance.on('flip', (event) => {
+                    pageIndicator.textContent = `Página ${event.data + 1} de ${pdf.numPages}`;
+                    playTurnSound();
+                });
+
+                prevButton.addEventListener('click', () => {
+                    pageFlipInstance.flipPrev();
+                });
+
+                nextButton.addEventListener('click', () => {
+                    pageFlipInstance.flipNext();
+                });
+            } catch (error) {
+                showError('No pude cargar el instructivo como flipbook. Revisa que el PDF exista en assets/doc/instructivo miso.pdf.');
+                console.error(error);
+            }
+        }
+
+        window.addEventListener('load', initFlipbook);
+    </script>
+</body>
+</html>
