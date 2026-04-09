@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap locations
+Sitemap: https://chicasencaramelo.org/sitemap.xml
+Sitemap: https://chicasencaramelo.org/sitemap.php
